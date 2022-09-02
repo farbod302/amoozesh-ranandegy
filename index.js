@@ -193,6 +193,9 @@ app.use("/registion", registion)
 const mod = require("./routs/mod")
 app.use("/mod", mod)
 
+const user = require("./routs/user")
+app.use("/user", user)
+
 
 
 server.listen("6544", () => { console.log("Server run on port 6544"); })

@@ -19,7 +19,8 @@ router.post("/create_training_session",async (req, res) => {
         id
 
     }
-    let url = qr_code(id)
+    let url =await qr_code(id)
+    console.log(url);
     if (!url) return reject(res, "مشکل در ثبت درخواست")
     new Session(new_session).save()
     res.json({
@@ -30,18 +31,19 @@ router.post("/create_training_session",async (req, res) => {
 })
 
 
-router.post("/sch_lists",async (req, res) => {
+router.post("/sch_list",async (req, res) => {
     const { token } = req.body
     let mod = verify_token(token,res)
     if (!mod) { return reject(res,"شناسه نامعتبر") }
     const { id, institution } = mod
     let all_sch = await Schedule.findOne({ id: institution })
     let user_sch = all_sch.list.filter(e => e.mod_id === id)
+    let users=user_sch.map(e=>{return {...e.user,id:e.user_id}})
     res.json({
         status: true,
         msg: "",
         data: {
-            list: user_sch
+            list: users
         }
     })
 })

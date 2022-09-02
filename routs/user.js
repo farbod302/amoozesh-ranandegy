@@ -8,7 +8,7 @@ const { reject, verify_token } = require('./helper')
 
 
 
-router.post("/join_training_session", (req, res) => {
+router.post("/join_training_session",async (req, res) => {
     const { id, token } = req.body
 
     let user = verify_token(token)
@@ -25,7 +25,7 @@ router.post("/join_training_session", (req, res) => {
 })
 
 
-router.post("/end_training_session", (req, res) => {
+router.post("/end_training_session",async (req, res) => {
     const { id, token } = req.body
 
     let user = verify_token(token)
@@ -44,7 +44,7 @@ router.post("/end_training_session", (req, res) => {
     })
 })
 
-router.get("/end_session", (req, res) => {
+router.get("/end_session",async (req, res) => {
     const { id, token } = req.query
     let user = verify_token(token)
     if (!user || user.access != 0) return reject(res, "شناسه نامعتبر")
@@ -56,6 +56,22 @@ router.get("/end_session", (req, res) => {
         status: true,
         msg: "آموزش به اتمام رسید",
         data: {}
+    })
+})
+
+
+router.post("/user_history", async (req, res) => {
+    const { id } = req.body
+
+    let session = await Session.find({ user: id, start_date: { $gt: 0 } }, { start_date: 1, end_date: 1, _id: 0 })
+    let orall = 0
+    session.forEach(e => {
+        orall += (e.end_date - e.start_date)
+    })
+    res.json({
+        status: true,
+        msg: "",
+        data: { session, orall }
     })
 })
 

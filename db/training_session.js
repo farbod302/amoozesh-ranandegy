@@ -9,8 +9,8 @@ const session = mongoose.Schema({
     create_date: Number,
     institution:String,
     start_date: { type: Number, default: 0 },
-    end_data: { type: Number, default: 0 },
-    used: { type: Number, default: 0 },
+    end_date: { type: Number, default: 0 },
+    used: { type: Boolean, default: true },
     depricate: { type: Boolean, default: false },
 })
 
