@@ -32,7 +32,7 @@ router.post("/log_in", async (req, res) => {
 router.post("/change_password", async (req, res) => {
     const { id, prv_password, new_password } = req.body
     let prv_password_hash = sha256(prv_password)
-    let user = await User.find({ id: id, password: prv_password_hash })
+    let user = await User.findOne({ id: id, password: prv_password_hash })
     if (!user) { return reject(res, "نام کاربری یا پسورد اشتباه است") }
     await User.findOneAndUpdate({id:id},{$set:{password:sha256(new_password)}})
     res.json({
