@@ -30,10 +30,10 @@ router.post("/create_training_session",async (req, res) => {
 })
 
 
-router.post("/sch_lits",async (req, res) => {
+router.post("/sch_lists",async (req, res) => {
     const { token } = req.body
     let mod = verify_token(token,res)
-    if (!mod) { return reject(res,"سی") }
+    if (!mod) { return reject(res,"شناسه نامعتبر") }
     const { id, institution } = mod
     let all_sch = await Schedule.findOne({ id: institution })
     let user_sch = all_sch.list.filter(e => e.mod_id === id)
