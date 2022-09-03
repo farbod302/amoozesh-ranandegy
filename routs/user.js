@@ -82,7 +82,7 @@ router.post("/forget_req", async (req, res) => {
 
     let s_user = await User.findOne({ id: id })
     if (!s_user) { return reject(res, "کد ملی ثبت نشده") }
-    let random_num = Math.floor((Math.random() * (99999 - 10000 + 1)))
+    let random_num = Math.floor((Math.random() * (9999 - 1000 + 1)))
     console.log(random_num);
     let new_fp = {
         user_id: id,
