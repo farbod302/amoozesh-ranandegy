@@ -77,6 +77,22 @@ router.post("/user_history", async (req, res) => {
 })
 
 
+router.post("/confirm_code", (req, res) => {
+    const { code, id } = req.body
+    let is_exist = await Fp.findOne({ user_id: id, code: code, used: false })
+    if(is_exist){
+        res.json({
+            status:true,
+            msg:"",
+            data:{is_exist:true}
+        })
+       return 
+    }
+    else {return reject(res,"کد تایید اشتباه است")}
+
+})
+
+
 router.post("/forget_req", async (req, res) => {
     const { id } = req.body
 
@@ -102,16 +118,16 @@ router.post("/forget_req", async (req, res) => {
 })
 
 
-router.post("/forget_action",async (req, res) => {
+router.post("/forget_action", async (req, res) => {
     const { code, id, new_password } = req.body
     let is_exist = await Fp.findOne({ user_id: id, code: code, used: false })
     if (!is_exist) { return reject(res, "کد وارد شده اشتباه است") }
     await User.findOneAndUpdate({ id: id }, { $set: { password: sha256(new_password) } })
     await Fp.findOneAndUpdate({ code: code, user_id: id }, { $set: { used: true } })
     res.json({
-        status:true,
-        msg:"تغییرات اعمال شد",
-        data:{}
+        status: true,
+        msg: "تغییرات اعمال شد",
+        data: {}
     })
 })
 
