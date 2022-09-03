@@ -77,7 +77,7 @@ router.post("/user_history", async (req, res) => {
 })
 
 
-router.post("/confirm_code", (req, res) => {
+router.post("/confirm_code",async (req, res) => {
     const { code, id } = req.body
     let is_exist = await Fp.findOne({ user_id: id, code: code, used: false })
     if(is_exist){
