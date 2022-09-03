@@ -5,7 +5,6 @@ const fs = require("fs");
 
 
 const reject = (res, msg) => {
-    console.log(res);
     res.json({
         status: false,
         msg,

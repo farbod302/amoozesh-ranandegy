@@ -13,15 +13,15 @@ router.post("/add", async (req, res) => {
     if (!acc.includes(3) && !ins_id) { return reject(res, "کد آموزشگاه ثبت شود") }
     let new_user = {
         identity: { name, lastName, phone },
-        institution: ins_id || "",
-        access: acc || [0],
+        institution: [ins_id] || [],
+        access: acc || [{ ins: ins_id, acc: [0] }],
         password: sha(id),
         last_checkout: Date.now(),
         id
     }
     if (ins_id && acc.includes(0)) {
         let new_schedule = {
-            id:uid(4),
+            id: uid(4),
             user: new_user.identity,
             user_id: id,
             mod: null,
